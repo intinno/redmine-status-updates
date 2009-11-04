@@ -10,7 +10,9 @@ class StatusesController < ApplicationController
   # Print a list of all the developer statuses.
   # TODO: Pagination, xml/json feeds.
   def index
-    @statuses = Status.recent_updates_for(project)
+    updates = Status.recent_updates_for(project) + 
+      Status.find(:all, :conditions => "project_id is NULL")
+    @statuses = updates.sort{|a,b| b.created_at <=> a.created_at }[0..100] 
   end
   
   

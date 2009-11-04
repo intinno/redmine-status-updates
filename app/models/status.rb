@@ -2,7 +2,7 @@ class Status < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
-  validates_presence_of :project_id
+  #validates_presence_of :project_id
   extend StatusesHelper
   
   #attr_protected :project_id
@@ -51,7 +51,11 @@ class Status < ActiveRecord::Base
       :include => :project
     }
   }
-  
+
+  def message_with_details
+    "#{self.message} - #{self.user.name} (#{self.created_at.strftime("%d/%m/%y %H:%M")})\n\n"
+  end
+
   def has_hashtag?
     return (message && message.match(Hashtag)) ? true : false
   end
